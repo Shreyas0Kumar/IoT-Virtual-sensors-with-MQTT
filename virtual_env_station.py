@@ -124,7 +124,7 @@ class EnvironmentalStation:
             # For ThingSpeak MQTT, client ID is important
             if "thingspeak" in self.broker.lower():
                 # Use channel ID as part of client ID for ThingSpeak
-                client_id = f"python_{self.channel_id}_{int(time.time())}"
+                client_id = self.config["username"]
                 # Recreate the client with this ID
                 self.client = mqtt.Client(client_id=client_id, clean_session=True)
                 # Reassign callbacks
@@ -148,7 +148,7 @@ class EnvironmentalStation:
             # Check if broker is reachable before attempting connection
             socket.setdefaulttimeout(5)
             try:
-                socket.socket().connect((self.broker, self.port))
+                socket.socket().connect(self.config["username"], self.config["username"], self.config["mqtt_password"])
                 logging.info(f"Broker {self.broker}:{self.port} is reachable")
             except socket.error as e:
                 logging.error(f"Broker {self.broker}:{self.port} is not reachable: {e}")

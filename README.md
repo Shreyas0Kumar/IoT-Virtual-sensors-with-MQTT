@@ -51,7 +51,7 @@ The system consists of:
      "port": 1883,
      "username": "YOUR_THINGSPEAK_USERNAME",
      "mqtt_api_key": "YOUR_USER_API_KEY",
-     "use_mqtt": true
+     "mqtt_password": "YOUR_MQTT_PASSWORD"
    }
    ```
 
@@ -64,7 +64,12 @@ The system consists of:
    - Field 3: CO2 (ppm)
    - Status field: Station ID
 3. Get your Channel ID, Write API Key, and Read API Key from the channel settings
-4. Get your User API Key and username from your profile page
+4. Get your ThingSpeak username from your profile page
+5. Get your User API Key from your profile page under "API Keys"
+6. For MQTT authentication, you'll need to set up the following:
+   - `username`: Your ThingSpeak username (found in your profile)
+   - `mqtt_api_key`: Your User API Key (from your profile)
+   - `mqtt_password`: Your MQTT password (this may be a separate credential for MQTT access)
 
 ## Usage
 
@@ -146,7 +151,7 @@ The system attempts to use ThingSpeak's MQTT broker for data transmission with t
 - Broker: mqtt3.thingspeak.com
 - Port: 1883
 - Topic format: channels/{channel_id}/publish/{write_api_key}
-- Authentication: username and User API Key
+- Authentication: username and MQTT credentials
 - Payload format: CSV values for each field
 
 If MQTT connection fails, the system automatically falls back to using the REST API.
@@ -156,9 +161,10 @@ If MQTT connection fails, the system automatically falls back to using the REST 
 ### MQTT Connection Issues
 
 If you experience MQTT connection issues:
-1. Verify your ThingSpeak username and User API Key are correct
+1. Verify your ThingSpeak username, User API Key, and MQTT password are correct in your config.json file
 2. Check network connectivity to mqtt3.thingspeak.com:1883
-3. Consider using the REST API option if MQTT continues to be problematic
+3. Ensure your Client ID matches your username for ThingSpeak MQTT
+4. Consider using the REST API option if MQTT continues to be problematic
 
 ### Data Visibility Issues
 
@@ -186,6 +192,7 @@ If data doesn't appear in ThingSpeak:
 - All data is stored in ThingSpeak and can be accessed through their web interface
 - The system automatically falls back to REST API if MQTT connection fails
 - Multiple virtual stations can be run concurrently
+- For MQTT connections to work properly, ensure all authentication parameters are correctly configured
 
 ## License
 
